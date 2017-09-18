@@ -45,7 +45,7 @@ void MotionMaster::Initialize()
         MovementGenerator* current = top();
         pop();
         if (current)
-            DirectDelete(current);   
+            DirectDelete(current);
     }
 
     InitDefault();
@@ -408,7 +408,7 @@ void MotionMaster::MoveJump(float x, float y, float z, float speedXY, float spee
     float max_height = -Movement::computeFallElevation(moveTimeHalf, false, -speedZ);
 
     Movement::MoveSplineInit init(_owner);
-    init.MoveTo(x, y, z);
+    init.MoveTo(x, y, z, false);
     init.SetParabolic(max_height, 0);
     init.SetVelocity(speedXY);
     if (o < 6.82f)
@@ -428,7 +428,7 @@ void MotionMaster::CustomJump(float x, float y, float z, float speedXY, float sp
     max_height /= 15.0f;
 
     Movement::MoveSplineInit init(_owner);
-    init.MoveTo(x, y, z);
+    init.MoveTo(x, y, z, false);
     init.SetParabolic(max_height, 0);
     init.SetVelocity(speedXY);
     init.Launch();
@@ -456,7 +456,7 @@ void MotionMaster::MoveFall(uint32 id/*=0*/)
     }
 
     Movement::MoveSplineInit init(_owner);
-    init.MoveTo(_owner->GetPositionX(), _owner->GetPositionY(), mapHeight);
+    init.MoveTo(_owner->GetPositionX(), _owner->GetPositionY(), mapHeight, false);
     init.SetFall();
     init.Launch();
     Mutate(new EffectMovementGenerator(id), MOTION_SLOT_CONTROLLED);
@@ -476,7 +476,7 @@ void MotionMaster::MoveBackward(uint32 id, float x, float y, float z, float spee
     Mutate(new EffectMovementGenerator(id), MOTION_SLOT_CONTROLLED);
 }
 
-void MotionMaster::MoveCharge(float x, float y, float z, float speed, uint32 id)
+void MotionMaster::MoveCharge(float x, float y, float z, float speed, uint32 id, bool generatePath /*= false*/, Unit const* target)
 {
     if (Impl[MOTION_SLOT_CONTROLLED] && Impl[MOTION_SLOT_CONTROLLED]->GetMovementGeneratorType() != DISTRACT_MOTION_TYPE)
         return;
@@ -484,13 +484,28 @@ void MotionMaster::MoveCharge(float x, float y, float z, float speed, uint32 id)
     if (_owner->GetTypeId() == TYPEID_PLAYER)
     {
         sLog->outDebug(LOG_FILTER_GENERAL, "Player (GUID: %u) now charges to point (X: %f Y: %f Z: %f).", _owner->GetGUIDLow(), x, y, z);
-        Mutate(new PointMovementGenerator<Player>(id, x, y, z, speed), MOTION_SLOT_CONTROLLED);
+        Mutate(new PointMovementGenerator<Player>(id, x, y, z, generatePath, speed, target), MOTION_SLOT_CONTROLLED);
     }
     else
     {
         sLog->outDebug(LOG_FILTER_GENERAL, "Creature (Entry: %u GUID: %u) now charges to point (X: %f Y: %f Z: %f).", _owner->GetEntry(), _owner->GetGUIDLow(), x, y, z);
-        Mutate(new PointMovementGenerator<Creature>(id, x, y, z, speed), MOTION_SLOT_CONTROLLED);
+        Mutate(new PointMovementGenerator<Creature>(id, x, y, z, generatePath, speed, target), MOTION_SLOT_CONTROLLED);
     }
+}
+
+void MotionMaster::MoveCharge(PathGenerator const& path, float speed /*= SPEED_CHARGE*/, Unit const* target /*= nullptr*/)
+{
+    G3D::Vector3 dest = path.GetActualEndPosition();
+
+    MoveCharge(dest.x, dest.y, dest.z, speed, EVENT_CHARGE_PREPATH);
+
+    // Charge movement is not started when using EVENT_CHARGE_PREPATH
+    Movement::MoveSplineInit init(_owner);
+    init.MovebyPath(path.GetPath());
+    init.SetVelocity(speed);
+    if (target)
+        init.SetFacing(target);
+    init.Launch();
 }
 
 void MotionMaster::MoveSeekAssistance(float x, float y, float z)

@@ -10,7 +10,7 @@ bzip2 (a freely available, patent free, high-quality data compressor)
 
 G3D (a commercial-grade C++ 3D engine available as Open Source (BSD License)
   http://g3d.sourceforge.net/
-  Version: 8.0-Release
+  Version: 9.0-Release r4036
 
 jemalloc (a general-purpose scalable concurrent malloc-implementation)
   http://www.canonware.com/jemalloc/
@@ -35,6 +35,10 @@ zlib (A Massively Spiffy Yet Delicately Unobtrusive Compression Library)
 gSOAP (a portable development toolkit for C and C++ XML Web services and XML data bindings)
   http://gsoap2.sourceforge.net/
   Version: 2.8.2
+
+recastnavigation (Recast is state of the art navigation mesh construction toolset for games)
+  https://github.com/memononen/recastnavigation
+  Version: 64385e9ed0822427bca5814d03a3f4c4d7a6db9f
 
 StormLib (a pack of modules, written in C++, which are able to read and also to write files from/to the MPQ archives)
   http://www.zezula.net/en/mpq/stormlib.html
