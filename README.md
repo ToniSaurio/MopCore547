@@ -1,3 +1,21 @@
+Hi! This is ToniSaurio & Dokman project, forked from MopCore547 repository: https://github.com/MoPSource/MopCore547
+
+This full project is here thanks to lots of people, including TrinityCore and MoPCore547.
+
+As this is a Gpl project we want to continue with this great idea in the same way, everybody can enjoy this sourcecode as the same way we enjoy the original one :)
+
+We are based in 5.4.7 Mists of Pandaria but is playable in 5.4.8 (Need to investigate further more here)
+
+**ROAD MAP**
+
+-Try to fix some important bugs and make the repository even more playable than it was forked.
+
+-We love CUSTOM, so we are gonna add new content trying to make it fit with official content.
+
+This is gonna be most detailed in the future :)
+
+You can find the original repository information BELOW
+
 ![mistsofpandarialogo](https://cloud.githubusercontent.com/assets/812439/18619016/c10a0e20-7dfa-11e6-92c3-0f0dc1f1be75.png)
 
 
@@ -24,3 +42,5 @@ https://mega.nz/#!ydtVBZJQ!winN-pZhwwDzB5u_kVrq9CzSpotjXzQXr4kObqDyQd0
 If you want to join our team you can just open issue requesting an invite and we will add you.
 
 This is GPL-based source so do whatever you want with it.
+
+
